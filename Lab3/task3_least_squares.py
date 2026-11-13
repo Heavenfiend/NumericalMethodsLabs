@@ -21,7 +21,7 @@ def read_data(path):
 
     return degrees, x, y
 
-# решаем систему уравнений методом Гаусса
+
 def gaussian_elimination(matrix, rhs):
     n = len(rhs)
     a = np.array(matrix, dtype=float)
@@ -58,7 +58,7 @@ def gaussian_elimination(matrix, rhs):
 
     return list(result)
 
-# составляем нормальную систему для метода наименьших квадратов
+
 def normal_system(x, y, degree):
     n = degree + 1
     matrix = np.zeros((n, n), dtype=float)
@@ -78,7 +78,7 @@ def normal_system(x, y, degree):
 
     return matrix.tolist(), rhs.tolist()
 
-# находим значение многочлена в заданной точке
+
 def polynomial(coefficients, point):
     result = 0.0
     for i in range(len(coefficients)):
@@ -142,7 +142,7 @@ def main():
         mse = sse / len(x)
         print(f"Сумма квадратов ошибок: {sse:.12f}")
         print(f"Средний квадрат ошибки (MSE): {mse:.12f}")
-        # проверка правильности
+
         max_residual = 0.0
         for i in range(degree + 1):
             row_sum = 0.0

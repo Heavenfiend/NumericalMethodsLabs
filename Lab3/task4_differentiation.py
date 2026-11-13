@@ -15,7 +15,7 @@ def read_data(path):
 
     return point, x, y
 
-# выбираем три соседних узла для вычисления производных
+
 def choose_nodes(x, point):
     n = len(x)
     start = 0
@@ -29,7 +29,7 @@ def choose_nodes(x, point):
 
     return start
 
-# находим разделённые разности и по ним вычисляем обе производные
+
 def derivatives(x, y, point):
     x0, x1, x2 = x[0], x[1], x[2]
     y0, y1, y2 = y[0], y[1], y[2]

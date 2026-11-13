@@ -13,20 +13,20 @@ def read_data(path):
 
     return a, b, h1, h2, parameter
 
-# функция, интеграл которой нужно найти
+
 def f(x, parameter):
     return (x * x) / (x * x + parameter)
 
-# первообразная для вычисления точного значения интеграла
+
 def antiderivative(x, parameter):
     scale = math.sqrt(parameter)
     return x - scale * math.atan(x / scale)
 
-# считаем, на сколько частей разбивается отрезок
+
 def interval_count(a, b, h):
     return round((b - a) / h)
 
-# метод левых прямоугольников берём значения в начале отрезков
+
 def left_rectangles(a, b, h, parameter):
     n = interval_count(a, b, h)
     total = 0.0
@@ -35,7 +35,7 @@ def left_rectangles(a, b, h, parameter):
         total += f(x, parameter)
     return h * total
 
-# метод правых прямоугольников берём значения в конце отрезков
+
 def right_rectangles(a, b, h, parameter):
     n = interval_count(a, b, h)
     total = 0.0
@@ -44,7 +44,7 @@ def right_rectangles(a, b, h, parameter):
         total += f(x, parameter)
     return h * total
 
-# метод средних прямоугольников берём середину каждого отрезка
+
 def midpoint_rectangles(a, b, h, parameter):
     n = interval_count(a, b, h)
     total = 0.0
@@ -53,7 +53,7 @@ def midpoint_rectangles(a, b, h, parameter):
         total += f(x, parameter)
     return h * total
 
-# метод трапеций учитываем значения на концах отрезков
+
 def trapezoids(a, b, h, parameter):
     n = interval_count(a, b, h)
     total = (f(a, parameter) + f(b, parameter)) / 2.0
@@ -62,7 +62,7 @@ def trapezoids(a, b, h, parameter):
         total += f(x, parameter)
     return h * total
 
-# метод симпсона
+
 def simpson(a, b, h, parameter):
     n = interval_count(a, b, h)
     total = f(a, parameter) + f(b, parameter)
@@ -74,7 +74,7 @@ def simpson(a, b, h, parameter):
             total += 2.0 * f(x, parameter)
     return h * total / 3.0
 
-# метод Рунге  Ромберга уточняем интеграл R = I2-I1/r^n - 1
+
 def runge_romberg(coarse, fine, ratio, order):
     correction = (fine - coarse) / (ratio ** order - 1.0)
     refined = fine + correction
