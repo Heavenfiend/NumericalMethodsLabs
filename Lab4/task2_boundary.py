@@ -5,7 +5,6 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 
-
 def read_data():
     path = Path(__file__).resolve().parent / "input" / "task4_2.txt"
     tokens = path.read_text(encoding="utf-8").split()
@@ -21,7 +20,7 @@ def read_data():
     limit = int(float(tokens[9]))
     return a, b, h, left, k, right, guess0, guess1, epsilon, limit
 
-
+# создаём сетку точек от a до b с заданным шагом
 def make_grid(a, b, h):
     n = round((b - a) / h)
     grid = []
@@ -29,7 +28,7 @@ def make_grid(a, b, h):
         grid.append(a + i * h)
     return grid
 
-
+# коэффициенты дифференциального уравнения после деления на x
 def p(x):
     return -(2.0 * x + 1.0) / x
 
@@ -41,7 +40,7 @@ def q(x):
 def f(x, y, z):
     return -p(x) * z - q(x) * y
 
-
+# находим коэффициенты точного решения из краевых условий
 def exact_coefficients(a, b, left, k, right):
     first = a * a + 2.0 * a
     second = (1.0 - k) * b * b + 2.0 * b
@@ -54,7 +53,7 @@ def exact_coefficients(a, b, left, k, right):
 def exact(x, c1, c2):
     return (c1 * x * x + c2) * math.exp(x)
 
-
+# решаем задачу Коши методом Рунге Кутты
 def rk4(x, y0, z0):
     h = x[1] - x[0]
     y = [y0]
@@ -80,7 +79,7 @@ def rk4(x, y0, z0):
         z.append(v + (l1 + 2.0 * l2 + 2.0 * l3 + l4) / 6.0)
     return y, z
 
-
+# метод стрельбы подбираем неизвестное начальное значение y(a)
 def shooting(x, left, k, right, guess0, guess1, epsilon, limit):
     y, z = rk4(x, guess0, left)
     residual0 = z[-1] - k * y[-1] - right
@@ -128,7 +127,7 @@ def thomas(lower, diagonal, upper, rhs):
 
     return y
 
-
+# метод конечных разностей заменяем производные и составляем систему затем решаем её методом прогонки
 def finite_differences(x, left, k, right):
     h = x[1] - x[0]
     n = len(x)

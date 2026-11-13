@@ -21,7 +21,7 @@ def read_data(path):
     return point, x, y
 
 
-def thomas(lower, diagonal, upper, rhs):
+def thomas(lower, diagonal, upper, rhs): # прогонка из первой лабы взятая
     n = len(diagonal)
     p, q = [0.0] * n, [0.0] * n
     for i in range(n):
@@ -43,18 +43,18 @@ def build_spline(x, y):
     lower, diagonal, upper, rhs = ([0.0] * n for _ in range(4))
     diagonal[0] = diagonal[-1] = 1.0
     for i in range(1, n - 1):
-        lower[i], diagonal[i], upper[i] = h[i - 1], 2 * (h[i - 1] + h[i]), h[i]
-        rhs[i] = 3 * ((y[i + 1] - y[i]) / h[i] - (y[i] - y[i - 1]) / h[i - 1])
+        lower[i], diagonal[i], upper[i] = h[i - 1], 2 * (h[i - 1] + h[i]), h[i] # лев часть формулы
+        rhs[i] = 3 * ((y[i + 1] - y[i]) / h[i] - (y[i] - y[i - 1]) / h[i - 1]) # пр часть формулы
     c = thomas(lower, diagonal, upper, rhs)
     coefficients = []
     for i in range(n - 1):
-        b = (y[i + 1] - y[i]) / h[i] - h[i] * (2 * c[i] + c[i + 1]) / 3
-        d = (c[i + 1] - c[i]) / (3 * h[i])
+        b = (y[i + 1] - y[i]) / h[i] - h[i] * (2 * c[i] + c[i + 1]) / 3 # для b
+        d = (c[i + 1] - c[i]) / (3 * h[i]) # для d
         coefficients.append((y[i], b, c[i], d))
     return coefficients
 
 
-def evaluate_piece(coefficients, offset, order=0):
+def evaluate_piece(coefficients, offset, order=0): # 1 2 производные или просто знач
     a, b, c, d = coefficients
     if order == 1:
         return b + 2 * c * offset + 3 * d * offset ** 2
@@ -63,7 +63,7 @@ def evaluate_piece(coefficients, offset, order=0):
     return a + offset * (b + offset * (c + offset * d))
 
 
-def find_interval(x, point):
+def find_interval(x, point): # в каком интервале точка
     if not x[0] <= point <= x[-1]:
         raise ValueError("Точка находится за пределами сплайна.")
     for i in range(len(x) - 1):

@@ -15,7 +15,7 @@ def read_data(path):
         raise ValueError("Неверное количество наборов или узлов.")
     for x in grids:
         if any(not math.isfinite(t) for t in x) or len(set(x)) != len(x):
-            raise ValueError("Узлы должны быть конечными и различными.")
+            raise ValueError("Узлы должны быть конечными и различными.") # т.к. нельзя делить на ноль
         if any(x[i] >= x[i + 1] for i in range(len(x) - 1)):
             raise ValueError("Узлы должны возрастать.")
         if not x[0] <= point <= x[-1]:
@@ -39,23 +39,23 @@ def divided_differences(x, y):
     table = [[0.0] * n for _ in range(n)]
     for i in range(n):
         table[i][0] = y[i]
-    for order in range(1, n):
+    for order in range(1, n): # по столбцам делаем треугольную матрицу
         for i in range(n - order):
             table[i][order] = (
-                (table[i + 1][order - 1] - table[i][order - 1])
+                (table[i + 1][order - 1] - table[i][order - 1])  # формула разделенных разностей f[xi, ... , xi+k]
                 / (x[i + order] - x[i])
             )
     return table
 
 
-def newton(x, coefficients, point):
+def newton(x, coefficients, point): # от внутренних скобочек
     result = coefficients[-1]
     for i in range(len(coefficients) - 2, -1, -1):
         result = coefficients[i] + (point - x[i]) * result
     return result
 
 
-def multiply_linear(coefficients, root):
+def multiply_linear(coefficients, root): # умножать на выражения x - root
     result = [0.0] * (len(coefficients) + 1)
     for i, value in enumerate(coefficients):
         result[i] -= root * value
@@ -63,7 +63,7 @@ def multiply_linear(coefficients, root):
     return result
 
 
-def expanded_lagrange(x, y):
+def expanded_lagrange(x, y): # вместо длинного получить короткий многочлен типа P(x) = x^2 + 1
     result = [0.0] * len(x)
     for i in range(len(x)):
         basis = [1.0]
@@ -77,7 +77,7 @@ def expanded_lagrange(x, y):
     return result
 
 
-def polynomial_text(coefficients):
+def polynomial_text(coefficients): # формируем красивый многочлен из пред функции
     return " ".join(
         f"{value:+.12g}" + (f"·x^{i}" if i > 1 else "·x" if i else "")
         for i, value in enumerate(coefficients)

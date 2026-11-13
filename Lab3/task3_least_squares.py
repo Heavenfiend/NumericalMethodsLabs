@@ -5,7 +5,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
-
 def read_data(path):
     raw_lines = path.read_text(encoding="utf-8").splitlines()
     lines = []
@@ -22,7 +21,7 @@ def read_data(path):
 
     return degrees, x, y
 
-
+# решаем систему уравнений методом Гаусса
 def gaussian_elimination(matrix, rhs):
     n = len(rhs)
     a = np.array(matrix, dtype=float)
@@ -59,7 +58,7 @@ def gaussian_elimination(matrix, rhs):
 
     return list(result)
 
-
+# составляем нормальную систему для метода наименьших квадратов
 def normal_system(x, y, degree):
     n = degree + 1
     matrix = np.zeros((n, n), dtype=float)
@@ -79,7 +78,7 @@ def normal_system(x, y, degree):
 
     return matrix.tolist(), rhs.tolist()
 
-
+# находим значение многочлена в заданной точке
 def polynomial(coefficients, point):
     result = 0.0
     for i in range(len(coefficients)):
@@ -115,7 +114,7 @@ def main():
     results = []
     figure, axis = plt.subplots(figsize=(9, 5))
     grid = np.linspace(min(x), max(x), 500)
-    styles = ["-", "--", "-."]
+    styles = ["-", "--", "-.", ":"]
 
     for index in range(len(degrees)):
         degree = degrees[index]
@@ -141,9 +140,9 @@ def main():
             sse += err * err
 
         mse = sse / len(x)
-        print(f"Сумма квадратов ошибок: {sse:.12f}")
-        print(f"Средний квадрат ошибки (MSE): {mse:.12f}")
-
+        print(f"Сумма квадратов ошибок: {sse:.12e}")
+        print(f"Средний квадрат ошибки (MSE): {mse:.12e}")
+        # проверка правильности
         max_residual = 0.0
         for i in range(degree + 1):
             row_sum = 0.0
@@ -167,7 +166,7 @@ def main():
 
     print(f"\n{'Степень':>9} {'Сумма квадратов':>20} {'Средний квадрат':>20}")
     for degree, sse, mse in results:
-        print(f"{degree:9d} {sse:20.12f} {mse:20.12f}")
+        print(f"{degree:9d} {sse:20.12e} {mse:20.12e}")
 
     best_degree = results[0][0]
     best_mse = results[0][2]
