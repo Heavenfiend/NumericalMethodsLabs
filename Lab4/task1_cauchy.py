@@ -15,7 +15,7 @@ def read_data():
     z0 = float(tokens[4])
     return a, b, h, y0, z0
 
-
+# cоздаём сетку точек от a до b с заданным шагом
 def make_grid(a, b, h):
     n = round((b - a) / h)
     grid = []
@@ -23,16 +23,17 @@ def make_grid(a, b, h):
         grid.append(a + i * h)
     return grid
 
-
+# выражение для второй производной из нашего уравнения
+# после замены z = y' получаем z' = f(x, y, z)
 def f(x, y, z):
     return -z * math.tan(x) - y * (math.cos(x) ** 2)
 
-
+# вычисляем точное решение для сравнения с численными методами
 def exact(x, a, y0, z0):
     t = math.sin(x) - math.sin(a)
     return y0 * math.cos(t) + (z0 / math.cos(a)) * math.sin(t)
 
-
+# один шаг метода Рунге  Кутты четвёртого порядка
 def rk4_step(x, y, z, h):
     k1 = h * z
     l1 = h * f(x, y, z)
@@ -50,7 +51,7 @@ def rk4_step(x, y, z, h):
     next_z = z + (l1 + 2.0 * l2 + 2.0 * l3 + l4) / 6.0
     return next_y, next_z
 
-
+# Метод Эйлера
 def euler_method(x, y0, z0):
     h = x[1] - x[0]
     y = [y0]
@@ -62,7 +63,7 @@ def euler_method(x, y0, z0):
         z.append(next_z)
     return y, z
 
-
+# метод Рунге Кутты
 def rk4_method(x, y0, z0):
     h = x[1] - x[0]
     y = [y0]
@@ -73,7 +74,8 @@ def rk4_method(x, y0, z0):
         z.append(next_z)
     return y, z
 
-
+# метод Адамса используем производные в четырёх последних узлах
+# первые три шага считаем методом Рунге Кутты
 def adams_method(x, y0, z0):
     h = x[1] - x[0]
     y = [y0]
