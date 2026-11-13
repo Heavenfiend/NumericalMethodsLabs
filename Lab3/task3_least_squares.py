@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 
+
 def read_data(path):
     raw_lines = path.read_text(encoding="utf-8").splitlines()
     lines = []

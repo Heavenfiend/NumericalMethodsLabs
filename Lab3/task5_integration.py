@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 
+
 def read_data(path):
     raw_lines = path.read_text(encoding="utf-8").splitlines()
     lines = [line.strip() for line in raw_lines if line.strip()]

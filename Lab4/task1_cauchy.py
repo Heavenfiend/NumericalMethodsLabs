@@ -5,6 +5,7 @@ from pathlib import Path
 import matplotlib.pyplot as plt
 
 
+
 def read_data():
     path = Path(__file__).resolve().parent / "input" / "task4_1.txt"
     tokens = path.read_text(encoding="utf-8").split()
